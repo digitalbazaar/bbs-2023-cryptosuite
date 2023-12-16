@@ -1,7 +1,7 @@
 /*!
  * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
  */
-import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
+//import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
 import * as ecdsaSd2023Cryptosuite from '../lib/index.js';
 import {ecdsaMultikeyKeyPair} from './mock-data.js';
 import {expect} from 'chai';
@@ -12,8 +12,8 @@ const {
   createVerifyCryptosuite
 } = ecdsaSd2023Cryptosuite;
 
-describe('ecdsa-sd-2023 cryptosuite', () => {
-  describe('exports', () => {
+describe('bbs-2023 cryptosuite', () => {
+  describe.only('exports', () => {
     it('should have proper exports', async () => {
       should.exist(ecdsaSd2023Cryptosuite);
       ecdsaSd2023Cryptosuite.createDiscloseCryptosuite.should.be.a('function');
