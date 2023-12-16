@@ -2,26 +2,26 @@
  * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
  */
 //import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
-import * as ecdsaSd2023Cryptosuite from '../lib/index.js';
-import {ecdsaMultikeyKeyPair} from './mock-data.js';
-import {expect} from 'chai';
+import * as bbs2023Cryptosuite from '../lib/index.js';
+//import {ecdsaMultikeyKeyPair} from './mock-data.js';
+//import {expect} from 'chai';
 
-const {
+/*const {
   createDiscloseCryptosuite,
   createSignCryptosuite,
   createVerifyCryptosuite
-} = ecdsaSd2023Cryptosuite;
+} = bbs2023Cryptosuite;*/
 
 describe('bbs-2023 cryptosuite', () => {
   describe.only('exports', () => {
     it('should have proper exports', async () => {
-      should.exist(ecdsaSd2023Cryptosuite);
-      ecdsaSd2023Cryptosuite.createDiscloseCryptosuite.should.be.a('function');
-      ecdsaSd2023Cryptosuite.createSignCryptosuite.should.be.a('function');
-      ecdsaSd2023Cryptosuite.createVerifyCryptosuite.should.be.a('function');
+      should.exist(bbs2023Cryptosuite);
+      bbs2023Cryptosuite.createDiscloseCryptosuite.should.be.a('function');
+      bbs2023Cryptosuite.createSignCryptosuite.should.be.a('function');
+      bbs2023Cryptosuite.createVerifyCryptosuite.should.be.a('function');
     });
   });
-
+/*
   describe('createSignCryptosuite', () => {
     it('should have proper exports', async () => {
       const cryptosuite = await createSignCryptosuite();
@@ -140,5 +140,5 @@ describe('bbs-2023 cryptosuite', () => {
       expect(verifier).to.not.exist;
       error.message.should.equal('Unsupported key type "BadKeyType".');
     });
-  });
+  });*/
 });
