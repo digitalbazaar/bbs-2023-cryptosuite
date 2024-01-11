@@ -1,14 +1,14 @@
 /*!
- * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2023-2024 Digital Bazaar, Inc. All rights reserved.
  */
-import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
-import * as ecdsaSd2023Cryptosuite from '../lib/index.js';
+import * as bbs2023Cryptosuite from '../lib/index.js';
+import * as Bls12381Multikey from '@digitalbazaar/bls12-381-multikey';
 import {
   achievementCredential,
   alumniCredential,
+  bls12381MultikeyKeyPair,
   dlCredential,
-  dlCredentialNoIds,
-  ecdsaMultikeyKeyPair
+  dlCredentialNoIds
 } from './mock-data.js';
 import {DataIntegrityProof} from '@digitalbazaar/data-integrity';
 import {expect} from 'chai';
@@ -19,8 +19,9 @@ import {loader} from './documentLoader.js';
 const {
   createDiscloseCryptosuite,
   createSignCryptosuite,
-  createVerifyCryptosuite
-} = ecdsaSd2023Cryptosuite;
+  createVerifyCryptosuite,
+  requiredAlgorithm: algorithm
+} = bbs2023Cryptosuite;
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 
@@ -34,7 +35,9 @@ describe('verify()', () => {
       const cryptosuite = createSignCryptosuite();
       const unsignedCredential = klona(alumniCredential);
 
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       const date = '2023-03-01T21:29:24Z';
       const suite = new DataIntegrityProof({
         signer: keyPair.signer(), date, cryptosuite
@@ -163,7 +166,7 @@ describe('verify()', () => {
         expect(errors[0].name).to.equal('NotFoundError');
       });
 
-    it('should fail verification if cryptosuite is not "ecdsa-sd-2023"',
+    it('should fail verification if cryptosuite is not "bbs-2023"',
       async () => {
         const cryptosuite = createVerifyCryptosuite();
         const suite = new DataIntegrityProof({cryptosuite});
@@ -265,7 +268,9 @@ describe('verify()', () => {
       const cryptosuite = createSignCryptosuite();
       const unsignedCredential = klona(dlCredential);
 
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       const date = '2023-03-01T21:29:24Z';
       const suite = new DataIntegrityProof({
         signer: keyPair.signer(), date, cryptosuite
@@ -313,7 +318,9 @@ describe('verify()', () => {
       const cryptosuite = createSignCryptosuite();
       const unsignedCredential = klona(dlCredentialNoIds);
 
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       const date = '2023-03-01T21:29:24Z';
       const suite = new DataIntegrityProof({
         signer: keyPair.signer(), date, cryptosuite
@@ -433,7 +440,9 @@ describe('verify()', () => {
       });
       const unsignedCredential = klona(dlCredentialNoIds);
 
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       const date = '2023-03-01T21:29:24Z';
       const suite = new DataIntegrityProof({
         signer: keyPair.signer(), date, cryptosuite
@@ -623,7 +632,9 @@ describe('verify()', () => {
       const cryptosuite = createSignCryptosuite();
       const unsignedCredential = klona(achievementCredential);
 
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       const date = '2023-03-01T21:29:24Z';
       const suite = new DataIntegrityProof({
         signer: keyPair.signer(), date, cryptosuite

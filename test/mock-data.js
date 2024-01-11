@@ -1,19 +1,14 @@
 /*!
- * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2023-2024 Digital Bazaar, Inc. All rights reserved.
  */
-export const FRAME_FLAGS = {
-  requireAll: true,
-  explicit: true,
-  omitGraph: true
-};
-
-const publicKeyMultibase = 'zDnaekGZTbQBerwcehBSXLqAg6s55hVEBms1zFy89VHXtJSa9';
-const secretKeyMultibase = 'z42tqZ5smVag3DtDhjY9YfVwTMyVHW6SCHJi2ZMrD23DGYS3';
+// eslint-disable-next-line max-len
+const publicKeyMultibase = 'zUC76eySqgji6uNDaCrsWnmQnwq8pj1MZUDrRGc2BGRu61baZPKPFB7YpHawussp2YohcEMAeMVGHQ9JtKvjxgGTkYSMN53ZfCH4pZ6TGYLawvzy1wE54dS6PQcut9fxdHH32gi';
+const secretKeyMultibase = 'z488x5kHU9aUe1weTqaf2sGFPgQS1HhunREFwB9bFeFwLch5';
 
 export const controller = `did:key:${publicKeyMultibase}`;
 const keyId = `${controller}#${publicKeyMultibase}`;
 
-export const publicEcdsaMultikey = {
+export const publicBls12381Multikey = {
   '@context': 'https://w3id.org/security/multikey/v1',
   type: 'Multikey',
   controller,
@@ -21,7 +16,7 @@ export const publicEcdsaMultikey = {
   publicKeyMultibase
 };
 
-export const ecdsaMultikeyKeyPair = {
+export const bls12381MultikeyKeyPair = {
   '@context': 'https://w3id.org/security/multikey/v1',
   type: 'Multikey',
   controller,
@@ -30,13 +25,13 @@ export const ecdsaMultikeyKeyPair = {
   secretKeyMultibase
 };
 
-export const controllerDocEcdsaMultikey = {
+export const controllerDocBls12381Multikey = {
   '@context': [
     'https://www.w3.org/ns/did/v1',
     'https://w3id.org/security/multikey/v1'
   ],
   id: controller,
-  assertionMethod: [publicEcdsaMultikey]
+  assertionMethod: [publicBls12381Multikey]
 };
 
 export const alumniCredential = {

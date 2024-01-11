@@ -1,10 +1,10 @@
 /*!
- * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2023-2024 Digital Bazaar, Inc. All rights reserved.
  */
-import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
-import * as ecdsaSd2023Cryptosuite from '../lib/index.js';
+import * as bbs2023Cryptosuite from '../lib/index.js';
+import * as Bls12381Multikey from '@digitalbazaar/bls12-381-multikey';
 import {
-  ecdsaMultikeyKeyPair,
+  bls12381MultikeyKeyPair,
   employeeCredential
 } from './mock-data.js';
 import {DataIntegrityProof} from '@digitalbazaar/data-integrity';
@@ -16,8 +16,9 @@ import {loader} from './documentLoader.js';
 const {
   createDiscloseCryptosuite,
   createSignCryptosuite,
-  createVerifyCryptosuite
-} = ecdsaSd2023Cryptosuite;
+  createVerifyCryptosuite,
+  requiredAlgorithm: algorithm
+} = bbs2023Cryptosuite;
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 
@@ -37,7 +38,9 @@ describe('verify VCDM 2.0 example VC', () => {
     });
     const unsignedCredential = klona(employeeCredential);
 
-    const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+    const keyPair = await Bls12381Multikey.from({
+      ...bls12381MultikeyKeyPair
+    }, {algorithm});
     const date = unsignedCredential.validFrom;
     const suite = new DataIntegrityProof({
       signer: keyPair.signer(), date, cryptosuite

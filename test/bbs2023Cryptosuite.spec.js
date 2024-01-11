@@ -1,16 +1,17 @@
 /*!
- * Copyright (c) 2023 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2023-2024 Digital Bazaar, Inc. All rights reserved.
  */
-//import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
 import * as bbs2023Cryptosuite from '../lib/index.js';
-//import {ecdsaMultikeyKeyPair} from './mock-data.js';
-//import {expect} from 'chai';
+import * as Bls12381Multikey from '@digitalbazaar/bls12-381-multikey';
+import {bls12381MultikeyKeyPair} from './mock-data.js';
+import {expect} from 'chai';
 
-/*const {
+const {
   createDiscloseCryptosuite,
   createSignCryptosuite,
-  createVerifyCryptosuite
-} = bbs2023Cryptosuite;*/
+  createVerifyCryptosuite,
+  requiredAlgorithm: algorithm
+} = bbs2023Cryptosuite;
 
 describe('bbs-2023 cryptosuite', () => {
   describe.only('exports', () => {
@@ -21,12 +22,12 @@ describe('bbs-2023 cryptosuite', () => {
       bbs2023Cryptosuite.createVerifyCryptosuite.should.be.a('function');
     });
   });
-/*
+
   describe('createSignCryptosuite', () => {
     it('should have proper exports', async () => {
       const cryptosuite = await createSignCryptosuite();
       should.exist(cryptosuite);
-      cryptosuite.name.should.equal('ecdsa-sd-2023');
+      cryptosuite.name.should.equal('bbs-2023');
       cryptosuite.requiredAlgorithm.should.equal('P-256');
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
@@ -39,7 +40,7 @@ describe('bbs-2023 cryptosuite', () => {
     it('should have proper exports', async () => {
       const cryptosuite = await createDiscloseCryptosuite();
       should.exist(cryptosuite);
-      cryptosuite.name.should.equal('ecdsa-sd-2023');
+      cryptosuite.name.should.equal('bbs-2023');
       cryptosuite.requiredAlgorithm.should.equal('P-256');
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
@@ -53,7 +54,7 @@ describe('bbs-2023 cryptosuite', () => {
     it('should have proper exports', async () => {
       const cryptosuite = await createVerifyCryptosuite();
       should.exist(cryptosuite);
-      cryptosuite.name.should.equal('ecdsa-sd-2023');
+      cryptosuite.name.should.equal('bbs-2023');
       cryptosuite.requiredAlgorithm.should.equal('P-256');
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
@@ -65,7 +66,9 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createSignCryptosuite();
       let verifier;
       let error;
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       keyPair.type = 'BadKeyType';
       try {
         verifier = await cryptosuite.createVerifier({
@@ -85,7 +88,9 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createDiscloseCryptosuite();
       let verifier;
       let error;
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       keyPair.type = 'BadKeyType';
       try {
         verifier = await cryptosuite.createVerifier({
@@ -101,13 +106,13 @@ describe('bbs-2023 cryptosuite', () => {
         'This cryptosuite must only be used with "derive".');
     });
 
-    it('should pass with ECDSA Multikey', async () => {
+    it('should pass with BBS Multikey', async () => {
       const cryptosuite = await createVerifyCryptosuite();
       let verifier;
       let error;
       try {
         verifier = await cryptosuite.createVerifier({
-          verificationMethod: {...ecdsaMultikeyKeyPair}
+          verificationMethod: {...bls12381MultikeyKeyPair}
         });
       } catch(e) {
         error = e;
@@ -115,10 +120,8 @@ describe('bbs-2023 cryptosuite', () => {
 
       expect(error).to.not.exist;
       expect(verifier).to.exist;
-      verifier.algorithm.should.equal('P-256');
-      verifier.id.should.equal(
-        'did:key:zDnaekGZTbQBerwcehBSXLqAg6s55hVEBms1zFy89VHXtJSa9' +
-        '#zDnaekGZTbQBerwcehBSXLqAg6s55hVEBms1zFy89VHXtJSa9');
+      verifier.algorithm.should.equal('BBS-BLS12-381-SHAKE-256');
+      verifier.id.should.equal(bls12381MultikeyKeyPair.id);
       verifier.verify.should.be.a('function');
     });
 
@@ -126,7 +129,9 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createVerifyCryptosuite();
       let verifier;
       let error;
-      const keyPair = await EcdsaMultikey.from({...ecdsaMultikeyKeyPair});
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      }, {algorithm});
       keyPair.type = 'BadKeyType';
       try {
         verifier = await cryptosuite.createVerifier({
@@ -140,5 +145,5 @@ describe('bbs-2023 cryptosuite', () => {
       expect(verifier).to.not.exist;
       error.message.should.equal('Unsupported key type "BadKeyType".');
     });
-  });*/
+  });
 });
