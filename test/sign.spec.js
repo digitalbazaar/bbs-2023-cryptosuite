@@ -23,7 +23,7 @@ const {purposes: {AssertionProofPurpose}} = jsigs;
 
 const documentLoader = loader.build();
 
-describe('sign()', () => {
+describe.only('sign()', () => {
   it('should sign a document', async () => {
     const cryptosuite = createSignCryptosuite();
     const unsignedCredential = klona(alumniCredential);
