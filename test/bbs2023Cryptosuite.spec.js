@@ -13,8 +13,8 @@ const {
   requiredAlgorithm: algorithm
 } = bbs2023Cryptosuite;
 
-describe('bbs-2023 cryptosuite', () => {
-  describe.only('exports', () => {
+describe.only('bbs-2023 cryptosuite', () => {
+  describe('exports', () => {
     it('should have proper exports', async () => {
       should.exist(bbs2023Cryptosuite);
       bbs2023Cryptosuite.createDiscloseCryptosuite.should.be.a('function');
@@ -28,7 +28,7 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createSignCryptosuite();
       should.exist(cryptosuite);
       cryptosuite.name.should.equal('bbs-2023');
-      cryptosuite.requiredAlgorithm.should.equal('P-256');
+      cryptosuite.requiredAlgorithm.should.equal('BBS-BLS12-381-SHA-256');
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
       cryptosuite.createProofValue.should.be.a('function');
@@ -41,7 +41,7 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createDiscloseCryptosuite();
       should.exist(cryptosuite);
       cryptosuite.name.should.equal('bbs-2023');
-      cryptosuite.requiredAlgorithm.should.equal('P-256');
+      cryptosuite.requiredAlgorithm.should.equal('BBS-BLS12-381-SHA-256');
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
       cryptosuite.createProofValue.should.be.a('function');
@@ -55,7 +55,7 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createVerifyCryptosuite();
       should.exist(cryptosuite);
       cryptosuite.name.should.equal('bbs-2023');
-      cryptosuite.requiredAlgorithm.should.equal('P-256');
+      cryptosuite.requiredAlgorithm.should.equal('BBS-BLS12-381-SHA-256');
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
     });
@@ -143,7 +143,8 @@ describe('bbs-2023 cryptosuite', () => {
 
       expect(error).to.exist;
       expect(verifier).to.not.exist;
-      error.message.should.equal('Unsupported key type "BadKeyType".');
+      error.message.should.equal(
+        '"key" must be a Multikey with type "Multikey".');
     });
   });
 });
