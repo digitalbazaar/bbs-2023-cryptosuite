@@ -26,7 +26,7 @@ const {purposes: {AssertionProofPurpose}} = jsigs;
 
 const documentLoader = loader.build();
 
-describe.only('derive()', () => {
+describe('derive()', () => {
   let signedAlumniCredential;
   before(async () => {
     const cryptosuite = createSignCryptosuite();

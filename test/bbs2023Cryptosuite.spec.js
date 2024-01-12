@@ -13,7 +13,7 @@ const {
   requiredAlgorithm: algorithm
 } = bbs2023Cryptosuite;
 
-describe.only('bbs-2023 cryptosuite', () => {
+describe('bbs-2023 cryptosuite', () => {
   describe('exports', () => {
     it('should have proper exports', async () => {
       should.exist(bbs2023Cryptosuite);
@@ -120,7 +120,7 @@ describe.only('bbs-2023 cryptosuite', () => {
 
       expect(error).to.not.exist;
       expect(verifier).to.exist;
-      verifier.algorithm.should.equal('BBS-BLS12-381-SHAKE-256');
+      verifier.algorithm.should.equal('BBS-BLS12-381-SHA-256');
       verifier.id.should.equal(bls12381MultikeyKeyPair.id);
       verifier.verify.should.be.a('function');
     });

@@ -242,7 +242,7 @@ describe('verify()', () => {
       const suite = new DataIntegrityProof({cryptosuite});
       const signedCredentialCopy = klona(revealedAlumniCredential);
       // intentionally add data (should fail even if it's the same as original)
-      // because signature count is different
+      // because message disclosure count is different
       signedCredentialCopy.credentialSubject.alumniOf =
         alumniCredential.credentialSubject.alumniOf;
 
@@ -257,7 +257,7 @@ describe('verify()', () => {
 
       expect(result.verified).to.be.false;
       expect(error.name).to.equal('Error');
-      expect(error.message).to.include('Signature count');
+      expect(error.message).to.include('Number of disclosed messages');
     });
   });
 
@@ -409,7 +409,7 @@ describe('verify()', () => {
       const suite = new DataIntegrityProof({cryptosuite});
       const signedCredentialCopy = klona(revealedDlCredentialNoIds);
       // intentionally add data (should fail even if it's the same as original)
-      // because signature count is different
+      // because message disclosure count is different
       signedCredentialCopy.credentialSubject.driverLicense.issuingAuthority =
         dlCredentialNoIds.credentialSubject.driverLicense.issuingAuthority;
 
@@ -424,7 +424,7 @@ describe('verify()', () => {
 
       expect(result.verified).to.be.false;
       expect(error.name).to.equal('Error');
-      expect(error.message).to.include('Signature count');
+      expect(error.message).to.include('Number of disclosed messages');
     });
   });
 
@@ -520,7 +520,7 @@ describe('verify()', () => {
       const suite = new DataIntegrityProof({cryptosuite});
       const signedCredentialCopy = klona(revealedMandatoryOnly);
       // intentionally add data (should fail even if it's the same as original)
-      // because signature count is different
+      // because message disclosure count is different
       signedCredentialCopy.credentialSubject.driverLicense.dateOfBirth =
         dlCredentialNoIds.credentialSubject.driverLicense.dateOfBirth;
 
@@ -535,7 +535,7 @@ describe('verify()', () => {
 
       expect(result.verified).to.be.false;
       expect(error.name).to.equal('Error');
-      expect(error.message).to.include('Signature count');
+      expect(error.message).to.include('Number of disclosed messages');
     });
 
     it('should verify with selective + mandatory properties', async () => {
@@ -593,17 +593,17 @@ describe('verify()', () => {
         expect(error.message).to.include('Invalid signature');
       });
 
-    it('should fail w/same signature count but different data',
+    it('should fail w/same message disclosure count but different data',
       async () => {
         const cryptosuite = createVerifyCryptosuite();
         const suite = new DataIntegrityProof({cryptosuite});
         const signedCredentialCopy = klona(revealedSelectiveAndMandatory);
         // intentionally add data (should fail even if it's the same as
-        // original) because signature count is different
+        // original) because message disclosure count is different
         signedCredentialCopy.credentialSubject.driverLicense
           .documentIdentifier = signedDlCredentialNoIdsMandatory
             .credentialSubject.driverLicense.documentIdentifier;
-        // intentionally delete `dateOfBirth` to keep signature count equal
+        // intentionally delete `dateOfBirth` to keep disclosure count equal
         delete signedCredentialCopy.credentialSubject.driverLicense.dateOfBirth;
 
         const result = await jsigs.verify(signedCredentialCopy, {
@@ -617,8 +617,8 @@ describe('verify()', () => {
 
         expect(result.verified).to.be.false;
         expect(error.name).to.equal('Error');
-        // should NOT fail due to bad signature count, but due to bad signature
-        expect(error.message).to.not.include('Signature count');
+        // should NOT fail due to bad disclosure count, but due to bad signature
+        expect(error.message).to.not.include('Number of disclosed messages');
         expect(error.message).to.include('Invalid signature');
       });
   });
