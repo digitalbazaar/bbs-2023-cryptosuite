@@ -31,6 +31,7 @@ describe('verify()', () => {
   describe('basic', () => {
     let signedAlumniCredential;
     let revealedAlumniCredential;
+    let revealedWithPresentationHeader;
     before(async () => {
       const cryptosuite = createSignCryptosuite();
       const unsignedCredential = klona(alumniCredential);
@@ -61,6 +62,22 @@ describe('verify()', () => {
           purpose: new AssertionProofPurpose(),
           documentLoader
         });
+      }
+
+      {
+        const cryptosuite = createDiscloseCryptosuite({
+          presentationHeader: new TextEncoder().encode('custom value'),
+          selectivePointers: [
+            '/credentialSubject/id'
+          ]
+        });
+        const suite = new DataIntegrityProof({cryptosuite});
+        revealedWithPresentationHeader = await jsigs.derive(
+          signedAlumniCredential, {
+            suite,
+            purpose: new AssertionProofPurpose(),
+            documentLoader
+          });
       }
     });
 
@@ -214,6 +231,50 @@ describe('verify()', () => {
       });
 
       expect(result.verified).to.be.true;
+    });
+
+    it('should verify with expected presentation header', async () => {
+      const cryptosuite = createVerifyCryptosuite({
+        expectedPresentationHeader: new TextEncoder().encode('custom value')
+      });
+      const suite = new DataIntegrityProof({cryptosuite});
+      const result = await jsigs.verify(revealedWithPresentationHeader, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+
+      expect(result.verified).to.be.true;
+    });
+
+    it('should pass and get last presentation header', async () => {
+      const cryptosuite = createVerifyCryptosuite();
+      const suite = new DataIntegrityProof({cryptosuite});
+      const result = await jsigs.verify(revealedWithPresentationHeader, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+
+      expect(result.verified).to.be.true;
+      const expectedPresentationHeader = new TextEncoder().encode(
+        'custom value');
+      expect(expectedPresentationHeader).to.eql(
+        cryptosuite.results?.lastParsedProof?.presentationHeader);
+    });
+
+    it('should fail with unexpected presentation header', async () => {
+      const cryptosuite = createVerifyCryptosuite({
+        expectedPresentationHeader: new TextEncoder().encode('incorrect')
+      });
+      const suite = new DataIntegrityProof({cryptosuite});
+      const result = await jsigs.verify(revealedWithPresentationHeader, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+
+      expect(result.verified).to.be.false;
     });
 
     it('should fail with a simple modified reveal doc', async () => {
@@ -479,6 +540,18 @@ describe('verify()', () => {
             documentLoader
           });
       }
+    });
+
+    it('should verify with mandatory properties', async () => {
+      const cryptosuite = createVerifyCryptosuite();
+      const suite = new DataIntegrityProof({cryptosuite});
+      const result = await jsigs.verify(revealedMandatoryOnly, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+
+      expect(result.verified).to.be.true;
     });
 
     it('should verify with mandatory properties', async () => {
