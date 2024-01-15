@@ -188,7 +188,6 @@ describe('derive()', () => {
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(
       signedAlumniCredential.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 
   it('should derive a reveal document w/N pointers', async () => {
@@ -237,7 +236,6 @@ describe('derive()', () => {
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(
       signedDlCredential.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 
   it('should derive a reveal document w/bnodes and N pointers', async () => {
@@ -286,7 +284,6 @@ describe('derive()', () => {
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(
       signedDlCredentialNoIds.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 
   it('should derive a mandatory only reveal document', async () => {
@@ -328,7 +325,6 @@ describe('derive()', () => {
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(
       signedDlCredentialNoIdsMandatory.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 
   it('should derive a mandatory and selective reveal document', async () => {
@@ -377,7 +373,6 @@ describe('derive()', () => {
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(
       signedDlCredentialNoIdsMandatory.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 
   it('should derive a reveal document with full arrays', async () => {
@@ -432,7 +427,6 @@ describe('derive()', () => {
     expect(revealed.proof).to.exist;
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(signedAchievementCredential.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 
   it('should derive a reveal document with selective arrays', async () => {
@@ -499,7 +493,6 @@ describe('derive()', () => {
     expect(revealed.proof).to.exist;
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(signedAchievementCredential.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 
   it('should derive a reveal document w/o first array element', async () => {
@@ -552,6 +545,5 @@ describe('derive()', () => {
     expect(revealed.proof).to.exist;
     expect(revealed.proof['@context']).to.not.exist;
     revealed.proof.should.not.deep.equal(signedAchievementCredential.proof);
-    // FIXME: parse `revealed.proof.proofValue` and assert signature count
   });
 });
