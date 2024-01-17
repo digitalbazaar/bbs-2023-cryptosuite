@@ -20,7 +20,7 @@ const {purposes: {AssertionProofPurpose}} = jsigs;
 
 const documentLoader = loader.build();
 
-describe.only('test vectors', () => {
+describe('test vectors', () => {
   before(async () => {
     const {keyMaterial} = testVectors;
     const keyPair = await Bls12381Multikey.fromRaw({
@@ -30,7 +30,6 @@ describe.only('test vectors', () => {
     });
     keyPair.controller = `did:key:${keyPair.publicKeyMultibase}`;
     keyPair.id = `${keyPair.controller}#${keyPair.publicKeyMultibase}`;
-    console.log('keyPair', await keyPair.export({public: true, secret: true}));
   });
 
   it('should derive and verify proof', async () => {
@@ -53,7 +52,6 @@ describe.only('test vectors', () => {
         documentLoader
       });
     } catch(e) {
-      console.log('error', e);
       error = e;
     }
 
@@ -63,6 +61,12 @@ describe.only('test vectors', () => {
       '@context': signedSDBase['@context'],
       type: signedSDBase.type,
       credentialSubject: {
+        // `sailNumber` and sails `1` and `2` are mandatory in test vector
+        sailNumber: signedSDBase.credentialSubject.sailNumber,
+        sails: [
+          signedSDBase.credentialSubject.sails[1],
+          signedSDBase.credentialSubject.sails[2]
+        ],
         boards: signedSDBase.credentialSubject.boards.slice(0, 2)
       }
     };
