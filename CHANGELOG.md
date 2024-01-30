@@ -1,6 +1,6 @@
 # @digitalbazaar/bbs-2023-cryptosuite Changelog
 
-## 1.1.1 - 2024-01-dd
+## 1.1.1 - 2024-01-30
 
 ### Fixed 
 - Encode `Map` objects in CBOR using the Map tag, not the object tag.
