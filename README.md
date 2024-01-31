@@ -1,7 +1,7 @@
 # BBS 2023 Data Integrity Cryptosuite _(@digitalbazaar/bbs-2023-cryptosuite)_
 
-[![Build status](https://img.shields.io/github/workflow/status/digitalbazaar/bbs-2023-cryptosuite/Node.js%20CI)](https://github.com/digitalbazaar/bbs-2023-cryptosuite/actions?query=workflow%3A%22Node.js+CI%22)
-[![Coverage status](https://img.shields.io/codecov/c/github/digitalbazaar/bbs-2023-cryptosuite)](https://codecov.io/gh/digitalbazaar/bbs-2023-cryptosuite)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/digitalbazaar/bbs-2023-cryptosuite/main.yml)](https://github.com/digitalbazaar/bbs-2023-cryptosuite/actions/workflows/main.yml)
+[![Coverage Status](https://img.shields.io/codecov/c/github/digitalbazaar/bbs-2023-cryptosuite)](https://codecov.io/gh/digitalbazaar/bbs-2023-cryptosuite)
 [![NPM Version](https://img.shields.io/npm/v/@digitalbazaar/bbs-2023-cryptosuite.svg)](https://npm.im/@digitalbazaar/bbs-2023-cryptosuite)
 
 > BBS 2023 Data Integrity Cryptosuite for use with jsonld-signatures.
@@ -18,7 +18,7 @@
 
 ## Background
 
-For use with https://github.com/digitalbazaar/jsonld-signatures v11.0 and above.
+For use with https://github.com/digitalbazaar/jsonld-signatures v11.2 and above.
 
 See also related specs:
 
@@ -30,7 +30,7 @@ TBD
 
 ## Install
 
-- Browsers and Node.js 16+ are supported.
+- Browsers and Node.js 18+ are supported.
 
 To install from NPM:
 
