@@ -15,16 +15,17 @@ import {loader} from './documentLoader.js';
 
 const {
   createDiscloseCryptosuite,
-  createSignCryptosuite,
-  requiredAlgorithm: algorithm
+  createSignCryptosuite
 } = bbs2023Cryptosuite;
+
+const algorithm = Bls12381Multikey.ALGORITHMS.BBS_BLS12381_SHA256;
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 
 const documentLoader = loader.build();
 
 describe('sign()', () => {
-  it('should sign a document', async () => {
+  it('should sign a document using `signer.multisign`', async () => {
     const cryptosuite = createSignCryptosuite();
     const unsignedCredential = klona(alumniCredential);
     const keyPair = await Bls12381Multikey.from({
@@ -34,6 +35,63 @@ describe('sign()', () => {
     const suite = new DataIntegrityProof({
       signer: keyPair.signer(), date, cryptosuite
     });
+
+    let error;
+    let signedCredential;
+    try {
+      signedCredential = await jsigs.sign(unsignedCredential, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+    } catch(e) {
+      error = e;
+    }
+
+    expect(error).to.not.exist;
+    expect(signedCredential.proof).to.exist;
+    expect(signedCredential.proof['@context']).to.not.exist;
+  });
+
+  it('should sign a document using `signer.sign()`', async () => {
+    const cryptosuite = createSignCryptosuite();
+    const unsignedCredential = klona(alumniCredential);
+    const keyPair = await Bls12381Multikey.from({
+      ...bls12381MultikeyKeyPair
+    }, {algorithm});
+    const date = '2023-03-01T21:29:24Z';
+    const signer = keyPair.signer();
+    delete signer.multisign;
+    const suite = new DataIntegrityProof({signer, date, cryptosuite});
+
+    let error;
+    let signedCredential;
+    try {
+      signedCredential = await jsigs.sign(unsignedCredential, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+    } catch(e) {
+      error = e;
+    }
+
+    expect(error).to.not.exist;
+    expect(signedCredential.proof).to.exist;
+    expect(signedCredential.proof['@context']).to.not.exist;
+  });
+
+  it('should sign a document using with alg=Bls12381G2', async () => {
+    const cryptosuite = createSignCryptosuite();
+    const unsignedCredential = klona(alumniCredential);
+    const keyPair = await Bls12381Multikey.from({
+      ...bls12381MultikeyKeyPair
+    }, {algorithm});
+    const date = '2023-03-01T21:29:24Z';
+    const signer = keyPair.signer();
+    delete signer.multisign;
+    signer.algorithm = 'Bls12381G2';
+    const suite = new DataIntegrityProof({signer, date, cryptosuite});
 
     let error;
     let signedCredential;
@@ -153,8 +211,8 @@ describe('sign()', () => {
     }
 
     const errorMessage = `The signer's algorithm "${signer.algorithm}" ` +
-      `does not match the required algorithm for the cryptosuite ` +
-      `"${cryptosuite.requiredAlgorithm}".`;
+      'is not a supported algorithm for the cryptosuite. The supported ' +
+      `algorithms are: "${cryptosuite.requiredAlgorithm.join(', ')}".`;
 
     expect(error).to.exist;
     expect(error.message).to.equal(errorMessage);
