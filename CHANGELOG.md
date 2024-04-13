@@ -1,6 +1,6 @@
 # @digitalbazaar/bbs-2023-cryptosuite Changelog
 
-## 1.2.0 - 2024-04-dd
+## 1.2.0 - 2024-04-12
 
 ### Added
 - Allow `Bls12381G2` to be specified as the signer algorithm to
