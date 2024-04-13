@@ -19,9 +19,10 @@ import {loader} from './documentLoader.js';
 const {
   createDiscloseCryptosuite,
   createSignCryptosuite,
-  createVerifyCryptosuite,
-  requiredAlgorithm: algorithm
+  createVerifyCryptosuite
 } = bbs2023Cryptosuite;
+
+const algorithm = Bls12381Multikey.ALGORITHMS.BBS_BLS12381_SHA256;
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 
@@ -319,6 +320,86 @@ describe('verify()', () => {
       expect(result.verified).to.be.false;
       expect(error.name).to.equal('Error');
       expect(error.message).to.include('Number of disclosed messages');
+    });
+  });
+
+  describe('using `signer.algorithm="Bls12381G2"`', () => {
+    let signedAlumniCredential;
+    let revealedAlumniCredential;
+    let revealedWithPresentationHeader;
+    before(async () => {
+      const cryptosuite = createSignCryptosuite();
+      const unsignedCredential = klona(alumniCredential);
+
+      const keyPair = await Bls12381Multikey.from({
+        ...bls12381MultikeyKeyPair
+      });
+      const date = '2023-03-01T21:29:24Z';
+      const signer = keyPair.signer();
+      signer.algorithm = 'Bls12381G2';
+      const suite = new DataIntegrityProof({signer, date, cryptosuite});
+
+      signedAlumniCredential = await jsigs.sign(unsignedCredential, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+
+      {
+        const cryptosuite = createDiscloseCryptosuite({
+          selectivePointers: [
+            '/credentialSubject/id'
+          ]
+        });
+        const suite = new DataIntegrityProof({cryptosuite});
+        revealedAlumniCredential = await jsigs.derive(signedAlumniCredential, {
+          suite,
+          purpose: new AssertionProofPurpose(),
+          documentLoader
+        });
+      }
+
+      {
+        const cryptosuite = createDiscloseCryptosuite({
+          presentationHeader: new TextEncoder().encode('custom value'),
+          selectivePointers: [
+            '/credentialSubject/id'
+          ]
+        });
+        const suite = new DataIntegrityProof({cryptosuite});
+        revealedWithPresentationHeader = await jsigs.derive(
+          signedAlumniCredential, {
+            suite,
+            purpose: new AssertionProofPurpose(),
+            documentLoader
+          });
+      }
+    });
+
+    it('should verify with only the credential subject ID', async () => {
+      const cryptosuite = createVerifyCryptosuite();
+      const suite = new DataIntegrityProof({cryptosuite});
+      const result = await jsigs.verify(revealedAlumniCredential, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+
+      expect(result.verified).to.be.true;
+    });
+
+    it('should verify with expected presentation header', async () => {
+      const cryptosuite = createVerifyCryptosuite({
+        expectedPresentationHeader: new TextEncoder().encode('custom value')
+      });
+      const suite = new DataIntegrityProof({cryptosuite});
+      const result = await jsigs.verify(revealedWithPresentationHeader, {
+        suite,
+        purpose: new AssertionProofPurpose(),
+        documentLoader
+      });
+
+      expect(result.verified).to.be.true;
     });
   });
 

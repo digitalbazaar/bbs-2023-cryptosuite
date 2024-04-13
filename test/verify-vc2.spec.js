@@ -16,9 +16,10 @@ import {loader} from './documentLoader.js';
 const {
   createDiscloseCryptosuite,
   createSignCryptosuite,
-  createVerifyCryptosuite,
-  requiredAlgorithm: algorithm
+  createVerifyCryptosuite
 } = bbs2023Cryptosuite;
+
+const algorithm = Bls12381Multikey.ALGORITHMS.BBS_BLS12381_SHA256;
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 

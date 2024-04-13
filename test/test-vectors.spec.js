@@ -12,9 +12,10 @@ import * as testVectors from './test-vectors.js';
 
 const {
   createDiscloseCryptosuite,
-  createVerifyCryptosuite,
-  requiredAlgorithm: algorithm
+  createVerifyCryptosuite
 } = bbs2023Cryptosuite;
+
+const algorithm = Bls12381Multikey.ALGORITHMS.BBS_BLS12381_SHA256;
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 

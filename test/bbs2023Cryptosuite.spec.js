@@ -9,9 +9,10 @@ import {expect} from 'chai';
 const {
   createDiscloseCryptosuite,
   createSignCryptosuite,
-  createVerifyCryptosuite,
-  requiredAlgorithm: algorithm
+  createVerifyCryptosuite
 } = bbs2023Cryptosuite;
+
+const algorithm = Bls12381Multikey.ALGORITHMS.BBS_BLS12381_SHA256;
 
 describe('bbs-2023 cryptosuite', () => {
   describe('exports', () => {
@@ -28,7 +29,10 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createSignCryptosuite();
       should.exist(cryptosuite);
       cryptosuite.name.should.equal('bbs-2023');
-      cryptosuite.requiredAlgorithm.should.equal('BBS-BLS12-381-SHA-256');
+      cryptosuite.requiredAlgorithm.should.eql([
+        'BBS-BLS12-381-SHA-256',
+        'Bls12381G2'
+      ]);
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
       cryptosuite.createProofValue.should.be.a('function');
@@ -41,7 +45,10 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createDiscloseCryptosuite();
       should.exist(cryptosuite);
       cryptosuite.name.should.equal('bbs-2023');
-      cryptosuite.requiredAlgorithm.should.equal('BBS-BLS12-381-SHA-256');
+      cryptosuite.requiredAlgorithm.should.eql([
+        'BBS-BLS12-381-SHA-256',
+        'Bls12381G2'
+      ]);
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
       cryptosuite.createProofValue.should.be.a('function');
@@ -55,7 +62,10 @@ describe('bbs-2023 cryptosuite', () => {
       const cryptosuite = await createVerifyCryptosuite();
       should.exist(cryptosuite);
       cryptosuite.name.should.equal('bbs-2023');
-      cryptosuite.requiredAlgorithm.should.equal('BBS-BLS12-381-SHA-256');
+      cryptosuite.requiredAlgorithm.should.eql([
+        'BBS-BLS12-381-SHA-256',
+        'Bls12381G2'
+      ]);
       cryptosuite.createVerifier.should.be.a('function');
       cryptosuite.createVerifyData.should.be.a('function');
     });

@@ -18,9 +18,10 @@ import {loader} from './documentLoader.js';
 
 const {
   createDiscloseCryptosuite,
-  createSignCryptosuite,
-  requiredAlgorithm: algorithm
+  createSignCryptosuite
 } = bbs2023Cryptosuite;
+
+const algorithm = Bls12381Multikey.ALGORITHMS.BBS_BLS12381_SHA256;
 
 const {purposes: {AssertionProofPurpose}} = jsigs;
 
@@ -452,6 +453,7 @@ describe('derive()', () => {
         documentLoader
       });
     } catch(e) {
+      console.log('error', e);
       error = e;
     }
 
