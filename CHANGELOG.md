@@ -1,6 +1,6 @@
 # @digitalbazaar/bbs-2023-cryptosuite Changelog
 
-## 2.0.0 - 2024-08-dd
+## 2.0.0 - 2024-08-19
 
 ### Changed
 - **BREAKING**: Use `@digitalbazaar/bls12-381-multikey@2` which is
