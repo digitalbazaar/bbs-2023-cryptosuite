@@ -1,5 +1,13 @@
 # @digitalbazaar/bbs-2023-cryptosuite Changelog
 
+## 2.0.0 - 2024-08-dd
+
+### Changed
+- **BREAKING**: Use `@digitalbazaar/bls12-381-multikey@2` which is
+  interoperable with IETF BBS draft 6 and no longer interoperable with
+  any previous versions (the previous versions should be considered
+  obsolete).
+
 ## 1.2.0 - 2024-04-12
 
 ### Added
