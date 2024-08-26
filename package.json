@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "@digitalbazaar/bls12-381-multikey": "^2.0.0",
-    "@digitalbazaar/di-sd-primitives": "^3.0.1",
+    "@digitalbazaar/di-sd-primitives": "^3.0.4",
     "base64url-universal": "^2.0.0",
     "cborg": "^4.0.5"
   },

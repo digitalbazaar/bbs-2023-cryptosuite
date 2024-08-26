@@ -1,5 +1,10 @@
 # @digitalbazaar/bbs-2023-cryptosuite Changelog
 
+## 2.0.1 - 2024-08-dd
+
+### Fixed
+- Use `@digitalbazaar/di-sd-primitives@3.0.4` to get latest bug fixes.
+
 ## 2.0.0 - 2024-08-19
 
 ### Changed
